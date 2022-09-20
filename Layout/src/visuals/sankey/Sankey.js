@@ -215,12 +215,38 @@ export default class Sankey extends Component {
         };
     }
 
-    onChangeNode = node => {
+    onChangeNode = (node) => {
       this.props.changeSelectedNode(node);
     };
-    onChangePath = path => {
+    onChangePath = (path) => {
       this.props.changeSelectedPath(path);
     };
+    changeSelectedData = (data) => {
+      this.props.changeSelectedData(data);
+    };
+
+    parse = (selected,data) => {
+      let rows = [];
+      console.log('selected data',selected);
+      if(selected.uid.endsWith('x')){
+          for(let i of selected.sourceLinks){
+              for(let j of i.contains){
+                  rows.push(data.find((e) => e["OID_"] === j));
+              }
+          }
+      }
+      else{
+          for(let i of selected.targetLinks){
+              for(let j of i.contains){
+                  rows.push(data.find((e) => e["OID_"] === j));
+              }
+          }
+      }
+      
+      //console.log('rows',rows);
+      //this.selectedRows(rows)
+      return rows;
+    }
 
   render() {
     const {
@@ -326,7 +352,8 @@ export default class Sankey extends Component {
                         });
                         this.setState({nodeValue: node});
                         this.setState({selected: 2});
-                        this.props.changeSelectedNode(node)
+                        //this.props.changeSelectedNode(node)
+                        this.props.changeSelectedData(this.parse(node,this.props.oData))
                       }}
                     />
             
