@@ -16,7 +16,7 @@ export default class STable extends Component {
         const {data} = this.props;
         return (
             <div id='STable' className='pane'>
-                <div className='header'>Case List</div>
+                <div className='header'>Selected Case List</div>
                 <List
                     size="small"
                     bordered

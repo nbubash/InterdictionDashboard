@@ -205,9 +205,8 @@ export default class Sankey extends Component {
         super(props);
         this.state = {
             highlightLinkIndexes: [],
+            selectedLinkIndexes: [],
             nodePadding: 9,
-            linkValue: 0,
-            nodeValue: 0,
             selected: 0, //0: nothing selected, 1: link selected, 2: node selected
             v1: "Cutter1",
             v2: "COURTOFARR",
@@ -215,36 +214,36 @@ export default class Sankey extends Component {
         };
     }
 
-    onChangeNode = (node) => {
-      this.props.changeSelectedNode(node);
-    };
-    onChangePath = (path) => {
-      this.props.changeSelectedPath(path);
-    };
     changeSelectedData = (data) => {
       this.props.changeSelectedData(data);
     };
 
-    parse = (selected,data) => {
+    parseNode = (selected) => {
       let rows = [];
-      console.log('selected data',selected);
+      //console.log('selected Node',selected);
       if(selected.uid.endsWith('x')){
           for(let i of selected.sourceLinks){
               for(let j of i.contains){
-                  rows.push(data.find((e) => e["OID_"] === j));
+                  rows.push(this.props.oData.find((e) => e["OID_"] === j));
               }
           }
       }
       else{
           for(let i of selected.targetLinks){
               for(let j of i.contains){
-                  rows.push(data.find((e) => e["OID_"] === j));
+                  rows.push(this.props.oData.find((e) => e["OID_"] === j));
               }
           }
       }
-      
-      //console.log('rows',rows);
-      //this.selectedRows(rows)
+      return rows;
+    }
+
+    parseLink = (selected) => {
+      let rows = [];
+      //console.log('selected Link',selected);
+      for(let j of selected.contains){
+          rows.push(this.props.oData.find((e) => e["OID_"] === j));
+      }
       return rows;
     }
 
@@ -267,9 +266,8 @@ export default class Sankey extends Component {
       <div
         onClick={() => {
           if(this.state.selected !==0){
-            this.setState({highlightLinkIndexes: []});
-            this.setState({linkValue: 0});
-            this.setState({nodeValue: 0});
+            //this.setState({highlightLinkIndexes: []});
+            this.setState({selectedLinkIndexes: []});
             this.setState({selected: 0});
           }
         }}>
@@ -328,7 +326,6 @@ export default class Sankey extends Component {
                       strokeWidth={2}
                       onMouseOver={() => {
                         if(this.state.selected === 0){
-                          this.setState({nodeValue: node});
                           this.setState({
                             highlightLinkIndexes: [
                               ...node.sourceLinks.map((l) => l.index),
@@ -338,22 +335,18 @@ export default class Sankey extends Component {
                         }
                       }}
                       onMouseOut={() => {
-                        if(this.state.selected === 0){
-                          this.setState({ highlightLinkIndexes: [] });
-                          this.setState({nodeValue: 0});
-                        }
+                        this.setState({ highlightLinkIndexes: [] });
                       }}
                       onClick = {() => {
                         this.setState({
-                          highlightLinkIndexes: [
+                          selectedLinkIndexes: [
                             ...node.sourceLinks.map((l) => l.index),
                             ...node.targetLinks.map((l) => l.index)
                           ]
                         });
-                        this.setState({nodeValue: node});
+                        this.setState({highlightLinkIndexes: []});
                         this.setState({selected: 2});
-                        //this.props.changeSelectedNode(node)
-                        this.props.changeSelectedData(this.parse(node,this.props.oData))
+                        this.props.changeSelectedData(this.parseNode(node))
                       }}
                     />
             
@@ -380,12 +373,12 @@ export default class Sankey extends Component {
                       d={path(link)}
                       stroke={
                         this.state.highlightLinkIndexes.includes(i)
-                          ? "red"
-                          : "black"
+                          ? "blue"
+                          : this.state.selectedLinkIndexes.includes(i) ? "red" : "black"
                       }
                       strokeWidth={Math.max(1, link.width)}
                       opacity={
-                        this.state.highlightLinkIndexes.includes(i) ? 0.5 : 0.15
+                        this.state.selectedLinkIndexes.includes(i) ? 0.5 : this.state.highlightLinkIndexes.includes(i) ? .5 : 0.15
                       }
                       fill="none"
                       onMouseOver={() => {
@@ -401,10 +394,11 @@ export default class Sankey extends Component {
                         }
                       }}
                       onClick = {() => {
-                        this.setState({ highlightLinkIndexes: [i] });
+                        this.setState({ selectedLinkIndexes: [i] });
+                        this.setState({highlightLinkIndexes: []});
                         this.setState({ linkValue: link});
                         this.setState({ selected: 1});
-                        this.props.changeSelectedPath(path);
+                        this.props.changeSelectedData(this.parseLink(link))
                       }}
                     />
                   ))}

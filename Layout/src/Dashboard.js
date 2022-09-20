@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Row, Col, Button } from 'antd';
+import { Layout, Row, Col, Button, Checkbox } from 'antd';
 import Map from './visuals/map/Map';
 import Sankey from './visuals/sankey/Sankey';
 import STable from './visuals/sankey/STable';
@@ -14,10 +14,6 @@ export default class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOID: "",
-            selectedNode: 0,
-            selectedPath: 0,
-            selectedData: [],
             data: oData
         }
     }
@@ -32,25 +28,15 @@ export default class Dashboard extends Component {
         this.setState({
             selectedData: value
         })
-        //console.log("changeSelectedData", value);
     }
-
-    //To be replaced with selectedSelectedData
-    changeSelectedNode = value => {
-        this.setState({
-            selectedNode: value
-        })
-    }
-    //To be replaced with selectedSelectedData
-    changeSelectedPath = value => {
-        this.setState({
-            selectedPath: value
-        })
-    }
-
+    
     render() {
-        const {selectedCase, selectedNode, selectedOID, selectedData} = this.state;
-        const filteredData = {};
+        const {selectedOID, selectedData, checked = true} = this.state;
+        const onChange = (e) => {
+            this.state.checked = e.target.checked;
+            //console.log("checked", this.state.checked);
+            this.forceUpdate();
+        };
         return (
             <div>
                 <Layout style={{ height: 920 }}>
@@ -70,13 +56,12 @@ export default class Dashboard extends Component {
                                         type="primary" 
                                         style={{ width: "100%" }}
                                         onClick={() => {
-                                            if(this.state.selectedNode != 0 || this.state.selectedPath != 0)
-                                                //console.log("predata", this.state.data);
+                                            if(this.state.selectedData.length > 0) {
                                                 this.state.data = selectedData;
-                                                console.log("postdata", this.state.data);
                                                 this.forceUpdate();
                                             }
                                         }
+                                    }
                                     >
                                         Drill Down
                                     </Button>
@@ -99,7 +84,11 @@ export default class Dashboard extends Component {
                                 </Content>
                             </Col>
                             <Col span={8} style={{ padding: "10px" }}>
-                                <Content>Content 3</Content>
+                                <Content>
+                                    <Checkbox onChange={onChange} defaultChecked={true}>
+                                        Map Coordinates?
+                                    </Checkbox>
+                                </Content>
                             </Col>
                         </Row>
                         <Row>
@@ -112,9 +101,9 @@ export default class Dashboard extends Component {
                                     />
                                 </Content>
                             </Col>
-                            <Col span={10} push={4} style={{ padding: "10px" }}>
+                            <Col span={10} push={3} style={{ padding: "10px" }}>
                                 <Content>
-                                    <Map />
+                                    <Map data = {checked ? this.state.data : []} />
                                 </Content>
                             </Col>
                         </Row>
