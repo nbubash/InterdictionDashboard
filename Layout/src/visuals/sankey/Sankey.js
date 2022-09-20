@@ -275,19 +275,19 @@ export default class Sankey extends Component {
         }}>
         <div>
           <VDrop
-          label="Column 1: "
+          label="Var 1: "
           options={options}
           value={this.state.v1}
           onChange={(e) => this.setState({ v1: e.target.value })}
           />
           <VDrop
-          label=" | Column 2: "
+          label=" | Var 2: "
           options={options}
           value={this.state.v2}
           onChange={(e) => this.setState({ v2: e.target.value })}
           />
           <VDrop
-          label=" | Column 3: "
+          label=" | Var 3: "
           options={options}
           value={this.state.v3}
           onChange={(e) => this.setState({ v3: e.target.value })}

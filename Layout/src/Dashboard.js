@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import data from './data';
 import { Layout, Row, Col, Button } from 'antd';
 import Map from './visuals/map/Map';
 import Sankey from './visuals/sankey/Sankey';
@@ -33,7 +32,7 @@ export default class Dashboard extends Component {
         this.setState({
             selectedData: value
         })
-        console.log("changeSelectedData", value);
+        //console.log("changeSelectedData", value);
     }
 
     //To be replaced with selectedSelectedData
@@ -52,7 +51,6 @@ export default class Dashboard extends Component {
     render() {
         const {selectedCase, selectedNode, selectedOID, selectedData} = this.state;
         const filteredData = {};
-        //const selectedData = [1,2];
         return (
             <div>
                 <Layout style={{ height: 920 }}>
@@ -73,9 +71,10 @@ export default class Dashboard extends Component {
                                         style={{ width: "100%" }}
                                         onClick={() => {
                                             if(this.state.selectedNode != 0 || this.state.selectedPath != 0)
-                                                console.log("predata", this.state.data);
+                                                //console.log("predata", this.state.data);
                                                 this.state.data = selectedData;
                                                 console.log("postdata", this.state.data);
+                                                this.forceUpdate();
                                             }
                                         }
                                     >
@@ -91,6 +90,7 @@ export default class Dashboard extends Component {
                                         onClick={() => {
                                             if(this.state.selectedNode != 0 || this.state.selectedPath != 0)
                                                 this.state.data = oData;
+                                                this.forceUpdate();
                                             }
                                         }
                                     >
@@ -104,9 +104,8 @@ export default class Dashboard extends Component {
                         </Row>
                         <Row>
                             <Col span={10} style={{ padding: "10px" }}>
-                                <Header>Header</Header>
                                 <Content>
-                                    <Sankey data={this.state.data} oData={oData} width={900} height={800} 
+                                    <Sankey data={this.state.data} oData={oData} width={700} height={650} 
                                         changeSelectedNode={this.changeSelectedNode}
                                         changeSelectedPath={this.changeSelectedPath}
                                         changeSelectedData={this.changeSelectedData}
