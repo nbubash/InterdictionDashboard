@@ -16,8 +16,10 @@ export default class STable extends Component {
         const {data} = this.props;
         return (
             <div id='STable' className='pane'>
-                <div className='header'>Selected Case List</div>
+                <div className='header'>Selected Case List (OID:Office)</div>
                 <List
+                    height= '200px'
+                    overflowY= 'scroll'
                     size="small"
                     bordered
                     dataSource={data === [] ? [{OID_: "", Office: ""}]:data}

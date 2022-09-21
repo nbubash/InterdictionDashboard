@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Layout, Row, Col, Button, Checkbox } from 'antd';
+import { Layout, Row, Col, Button, Checkbox, Popover } from 'antd';
 import Map from './visuals/map/Map';
 import Sankey from './visuals/sankey/Sankey';
 import STable from './visuals/sankey/STable';
 import oData from './data/EDD_DATA_FY17.json';
 import './dashboard.css';
+import textContent from './data/text.js';
 
 
 const { Sider, Content, Header, Footer } = Layout;
@@ -34,7 +35,6 @@ export default class Dashboard extends Component {
         const {selectedOID, selectedData, checked = true} = this.state;
         const onChange = (e) => {
             this.state.checked = e.target.checked;
-            //console.log("checked", this.state.checked);
             this.forceUpdate();
         };
         return (
@@ -52,49 +52,55 @@ export default class Dashboard extends Component {
                         <Row>
                             <Col span={8} style={{ padding: "10px" }}>
                                 <Content>
-                                    <Button 
-                                        type="primary" 
-                                        style={{ width: "100%" }}
-                                        onClick={() => {
-                                            if(this.state.selectedData.length > 0) {
-                                                this.state.data = selectedData;
-                                                this.forceUpdate();
+                                    <Popover content={textContent.drillTooltip}>
+                                        <Button 
+                                            type="primary" 
+                                            style={{ width: "100%" }}
+                                            onClick={() => {
+                                                if(this.state.selectedData.length > 0) {
+                                                    this.state.data = selectedData;
+                                                    this.forceUpdate();
+                                                }
                                             }
                                         }
-                                    }
-                                    >
-                                        Drill Down
-                                    </Button>
+                                        >
+                                            Drill Down
+                                        </Button>
+                                    </Popover>
                                 </Content>
                             </Col>
                             <Col span={8} style={{ padding: "10px" }}>
                                 <Content>
-                                    <Button 
-                                        type="primary" 
-                                        style={{ width: "100%" }}
-                                        onClick={() => {
-                                            if(this.state.selectedNode != 0 || this.state.selectedPath != 0)
-                                                this.state.data = oData;
-                                                this.forceUpdate();
+                                    <Popover content={textContent.resetTooltip}>
+                                        <Button 
+                                            type="primary" 
+                                            style={{ width: "100%" }}
+                                            onClick={() => {
+                                                if(this.state.selectedNode != 0 || this.state.selectedPath != 0)
+                                                    this.state.data = oData;
+                                                    this.forceUpdate();
+                                                }
                                             }
-                                        }
-                                    >
-                                        Reset
-                                    </Button>
+                                        >
+                                            Reset
+                                        </Button>
+                                    </Popover>
                                 </Content>
                             </Col>
                             <Col span={8} style={{ padding: "10px" }}>
                                 <Content>
-                                    <Checkbox onChange={onChange} defaultChecked={true}>
-                                        Map Coordinates?
-                                    </Checkbox>
+                                    <Popover content={textContent.mapCheckTooltip}>
+                                        <Checkbox onChange={onChange} defaultChecked={true}>
+                                            Map Coordinates?
+                                        </Checkbox>
+                                    </Popover>
                                 </Content>
                             </Col>
                         </Row>
                         <Row>
                             <Col span={10} style={{ padding: "10px" }}>
-                                <Content>
-                                    <Sankey data={this.state.data} oData={oData} width={700} height={650} 
+                                <Content className='Sankey' >
+                                    <Sankey data={this.state.data} oData={oData} width={750} height={650} 
                                         changeSelectedNode={this.changeSelectedNode}
                                         changeSelectedPath={this.changeSelectedPath}
                                         changeSelectedData={this.changeSelectedData}
@@ -102,9 +108,12 @@ export default class Dashboard extends Component {
                                 </Content>
                             </Col>
                             <Col span={10} push={3} style={{ padding: "10px" }}>
-                                <Content>
+                                <Content className='Map'>
                                     <Map data = {checked ? this.state.data : []} />
                                 </Content>
+                                <Footer>
+                                    {textContent.footerText}
+                                </Footer>
                             </Col>
                         </Row>
                     </Layout>
