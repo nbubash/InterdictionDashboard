@@ -3,6 +3,7 @@ import { Layout, Row, Col, Button, Checkbox, Popover } from 'antd';
 import Map from './visuals/map/Map';
 import Sankey from './visuals/sankey/Sankey';
 import STable from './visuals/sankey/STable';
+import DataTable from './visuals/table/DataTable';
 import oData from './data/EDD_DATA_FY17.json';
 import './dashboard.css';
 import textContent from './data/text.js';
@@ -37,6 +38,7 @@ export default class Dashboard extends Component {
             this.state.checked = e.target.checked;
             this.forceUpdate();
         };
+        
         return (
             <div>
                 <Layout style={{ height: 920 }}>
@@ -50,6 +52,16 @@ export default class Dashboard extends Component {
                     </Sider>
                     <Layout>
                         <Row>
+                            <Col span={8} style={{ padding: "10px" }}>
+                                <Content >
+                                    <DataTable/>
+                                </Content>
+                            </Col>
+                            <Col span={8} style={{ padding: "10px" }}>
+                                <Content>
+                                    
+                                </Content>
+                            </Col>
                             <Col span={8} style={{ padding: "10px" }}>
                                 <Content>
                                     <Popover content={textContent.drillTooltip}>
@@ -67,10 +79,6 @@ export default class Dashboard extends Component {
                                             Drill Down
                                         </Button>
                                     </Popover>
-                                </Content>
-                            </Col>
-                            <Col span={8} style={{ padding: "10px" }}>
-                                <Content>
                                     <Popover content={textContent.resetTooltip}>
                                         <Button 
                                             type="primary" 
@@ -85,10 +93,6 @@ export default class Dashboard extends Component {
                                             Reset
                                         </Button>
                                     </Popover>
-                                </Content>
-                            </Col>
-                            <Col span={8} style={{ padding: "10px" }}>
-                                <Content>
                                     <Popover content={textContent.mapCheckTooltip}>
                                         <Checkbox onChange={onChange} defaultChecked={true}>
                                             Map Coordinates?
