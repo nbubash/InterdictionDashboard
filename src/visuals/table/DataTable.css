@@ -1,5 +1,13 @@
 #DataTable {
-    height: 250px;
-    font-size: 8px;
+    height: 785px;
+    /* background-color: blueviolet; */
+}
+.ant-table-tbody {
+    font-size: 12px;
+    padding: 2px;
+    /* background-color: blueviolet; */
+}
+.ant-table-row {
+    line-height: 10px;
     /* background-color: blueviolet; */
 }

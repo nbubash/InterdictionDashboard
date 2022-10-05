@@ -14,7 +14,7 @@ export default class Map extends Component {
     const {data} = this.props;
     return (
       <div className="map">
-        <MapContainer center={[14.56, -60.81]} zoom={4} >
+        <MapContainer center={[14, -80]} zoom={4} >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png"

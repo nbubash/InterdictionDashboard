@@ -241,8 +241,8 @@ export default class Sankey extends Component {
     parseLink = (selected) => {
       let rows = [];
       //console.log('selected Link',selected);
-      for(let j of selected.contains){
-          rows.push(this.props.oData.find((e) => e["OID_"] === j));
+      for(let i of selected.contains){
+          rows.push(this.props.oData.find((e) => e["OID_"] === i));
       }
       return rows;
     }

@@ -27,6 +27,7 @@ export default class Dashboard extends Component {
     }
 
     changeSelectedData = value => {  
+        console.log(value);
         this.setState({
             selectedData: value
         })
@@ -42,19 +43,16 @@ export default class Dashboard extends Component {
         return (
             <div>
                 <Layout style={{ height: 920 }}>
-                    <Sider width={300} style={{backgroundColor:'#eee'}}>
-                        <Content style={{ height: 250 }}>
-                            <STable 
-                                data = {selectedData} 
-                                changeSelectedOID={this.changeSelectedOID}  
-                            />
+                    <Sider width={420} style={{backgroundColor:'#eee'}}>
+                        <Content style={{ height: 200 }}>
+                            <DataTable data={this.state.data}/>
                         </Content>
                     </Sider>
                     <Layout>
                         <Row>
                             <Col span={8} style={{ padding: "10px" }}>
                                 <Content >
-                                    <DataTable/>
+                                    
                                 </Content>
                             </Col>
                             <Col span={8} style={{ padding: "10px" }}>
