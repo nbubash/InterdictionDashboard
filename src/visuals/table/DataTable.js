@@ -5,6 +5,11 @@ import './DataTable.css';
 export default class DataTable extends Component {
 
     render() {
+        
+        const onSelectChange = (newSelectedRowKeys) => {
+            console.log('selectedRowKeys changed: ', selectedRowKeys);
+            setSelectedRowKeys(newSelectedRowKeys);
+        };
         const dataSource1 = () => {
             var arr = [];
             for (let i of this.props.data) {
@@ -41,15 +46,25 @@ export default class DataTable extends Component {
             dataIndex: 'var3',
             key: 'var3',
             sortDirections: ['ascend', 'descend', 'ascend'],
-            sorter: (a, b) => a.var3.localeCompare(b.var3)
+            sorter: (a, b) => a.var3.localeCompare(b.var3),
         },
         ];
 
-        const {data} = this.props;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: onSelectChange,
+            selections: [
+                Table.SELECTION_ALL,
+                Table.SELECTION_INVERT,
+                Table.SELECTION_NONE
+            ]
+        };
+
+        
         return (
             <div id='DataTable' className='pane'>
                 <div className='header'>Data Table</div>
-                    <Table dataSource={dataSource1()} columns={columns} scroll={{ y: 700 }} bordered pagination={false} style={{ height: 720 }} size="small" />
+                    <Table rowSelection={rowSelection} dataSource={dataSource1()} columns={columns} scroll={{ y: 700 }} bordered pagination={false} style={{ height: 720 }} size="small" />
             </div>
         )
     }
